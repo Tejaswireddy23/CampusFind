@@ -13,9 +13,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     private UserService userService;
@@ -29,6 +34,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request, HttpServletRequest req) {
         String ip = req.getRemoteAddr();
+        logger.info(">>> LOGIN ATTEMPT: identifier='{}', password='{}'", request.getLoginIdentifier(), request.getPassword());
         return ResponseEntity.ok(userService.login(request, ip));
     }
 

