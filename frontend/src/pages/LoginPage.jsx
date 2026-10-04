@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { GraduationCap, Mail, Lock, ArrowRight, ShieldCheck, UserCheck, Hash } from 'lucide-react';
+import { GraduationCap, Mail, Lock, ArrowRight, ShieldCheck, UserCheck, Hash, Eye, EyeOff } from 'lucide-react';
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -10,6 +10,7 @@ const LoginPage = () => {
 
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -18,12 +19,11 @@ const LoginPage = () => {
       ? location.state.from.pathname
       : '/dashboard';
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const executeLogin = async (id, pwd) => {
     setErrorMsg('');
     setLoading(true);
 
-    const res = await login(identifier.trim(), password);
+    const res = await login(id.trim(), pwd);
     setLoading(false);
 
     if (res.success) {
@@ -37,10 +37,15 @@ const LoginPage = () => {
     }
   };
 
-  const fillDemo = (demoId, demoPassword) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await executeLogin(identifier, password);
+  };
+
+  const fillAndLogin = async (demoId, demoPassword) => {
     setIdentifier(demoId);
     setPassword(demoPassword);
-    setErrorMsg('');
+    await executeLogin(demoId, demoPassword);
   };
 
   return (
@@ -68,23 +73,23 @@ const LoginPage = () => {
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
-              onClick={() => fillDemo('admin@campusfind.edu', 'Admin@123')}
-              className="px-2.5 py-1 rounded-lg bg-neutral-900 text-white font-medium hover:bg-neutral-800 transition-colors flex items-center gap-1"
+              onClick={() => fillAndLogin('admin@campusfind.edu', 'Admin@123')}
+              className="px-2.5 py-1 rounded-lg bg-neutral-900 text-white font-medium hover:bg-neutral-800 transition-colors flex items-center gap-1 active:scale-95 cursor-pointer"
             >
               <ShieldCheck className="w-3.5 h-3.5 text-primary" />
               Campus Admin
             </button>
             <button
               type="button"
-              onClick={() => fillDemo('STU2024001', 'password123')}
-              className="px-2.5 py-1 rounded-lg bg-white border border-neutral-200 text-neutral-800 font-medium hover:bg-neutral-50 transition-colors"
+              onClick={() => fillAndLogin('STU2024001', 'password123')}
+              className="px-2.5 py-1 rounded-lg bg-white border border-neutral-200 text-neutral-800 font-medium hover:bg-neutral-50 transition-colors active:scale-95 cursor-pointer"
             >
               Student Aravind
             </button>
             <button
               type="button"
-              onClick={() => fillDemo('STU2024002', 'password123')}
-              className="px-2.5 py-1 rounded-lg bg-white border border-neutral-200 text-neutral-800 font-medium hover:bg-neutral-50 transition-colors"
+              onClick={() => fillAndLogin('STU2024002', 'password123')}
+              className="px-2.5 py-1 rounded-lg bg-white border border-neutral-200 text-neutral-800 font-medium hover:bg-neutral-50 transition-colors active:scale-95 cursor-pointer"
             >
               Student Priya
             </button>
@@ -168,13 +173,22 @@ const LoginPage = () => {
                 <Lock className="w-4 h-4" />
               </div>
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 required
+                autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm"
+                className="w-full pl-10 pr-11 py-2.5 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-neutral-400 hover:text-neutral-600 focus:outline-none cursor-pointer"
+                title={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
           </div>
 
