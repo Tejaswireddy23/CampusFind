@@ -1,0 +1,24 @@
+package com.findback.model;
+
+public enum NotificationType {
+    MATCH,
+    MESSAGE,
+    CLAIM,
+    RECOVERY,
+    ADMIN,
+    SYSTEM,
+    MATCH_ALERT,
+    CLAIM_SUBMITTED,
+    CLAIM_APPROVED,
+    CLAIM_REJECTED,
+    INFO_REQUESTED,
+    RETURNED,
+    GEOFENCE_ALERT,
+    REPORT_VERIFIED,
+    REPORT_REMOVED,
+    STATUS_UPDATED,
+    ITEM_RECOVERED,
+    ACCOUNT_APPROVED,
+    ACCOUNT_REJECTED,
+    CAMPUS_ALERT
+}

@@ -1,0 +1,9 @@
+package com.findback.model;
+
+public enum ClaimStatus {
+    PENDING,
+    UNDER_REVIEW,
+    APPROVED,
+    REJECTED,
+    RETURNED
+}

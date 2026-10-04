@@ -1,0 +1,49 @@
+# ========================================================
+# CampusFind Root Git Ignore
+# ========================================================
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.p12
+
+# Node & Frontend dependencies
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+build/
+.npm/
+
+# Java & Backend build artifacts
+target/
+backend/target/
+*.jar
+*.war
+*.class
+
+# IDE & Editor configuration
+.idea/
+*.iml
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+
+# User Uploaded Media Files (Should be stored in object storage in production)
+uploads/
+backend/uploads/
+*.log
+logs/
+
+# Database files
+*.sql.gz
+*.sqlite
+*.db
