@@ -50,7 +50,14 @@ export const AuthProvider = ({ children }) => {
       success(`Welcome back, ${userData.name}!`);
       return { success: true, user: userData };
     } catch (err) {
-      const msg = err.response?.data?.message || 'Invalid Student ID/Email or password';
+      let msg = err.response?.data?.message;
+      if (!msg) {
+        if (err.message === 'Network Error' || !err.response) {
+          msg = 'Network connection issue to campus server. Please retry in a moment.';
+        } else {
+          msg = 'Invalid Student ID/Email or password';
+        }
+      }
       toastError(msg);
       return { success: false, error: msg };
     }
