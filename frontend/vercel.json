@@ -2,6 +2,14 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "https://punk-objective-charger-recognize.trycloudflare.com/api/$1"
+    },
+    {
+      "source": "/uploads/(.*)",
+      "destination": "https://punk-objective-charger-recognize.trycloudflare.com/uploads/$1"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
