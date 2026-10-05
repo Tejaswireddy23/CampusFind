@@ -8,6 +8,7 @@ import {
   Users,
   Search,
   ShieldAlert,
+  ShieldCheck,
   BarChart3,
   Flag,
   ListFilter,

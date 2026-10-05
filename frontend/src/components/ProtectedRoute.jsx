@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import ErrorBoundary from './ErrorBoundary';
 
 const ProtectedRoute = ({ children, requireAdmin = false }) => {
   const { user, loading, isAuthenticated, isAdmin } = useAuth();
@@ -22,7 +23,11 @@ const ProtectedRoute = ({ children, requireAdmin = false }) => {
     return <Navigate to="/dashboard" replace />;
   }
 
-  return children;
+  return (
+    <ErrorBoundary title={requireAdmin ? "Admin Dashboard couldn't be loaded" : "Page couldn't be loaded"}>
+      {children}
+    </ErrorBoundary>
+  );
 };
 
 export default ProtectedRoute;

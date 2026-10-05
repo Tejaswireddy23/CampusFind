@@ -7,6 +7,7 @@ import { NotificationProvider } from './context/NotificationContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
+import ErrorBoundary from './components/ErrorBoundary';
 
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
@@ -92,8 +93,9 @@ function App() {
             <div className="flex flex-col min-h-screen bg-white">
               <Navbar />
               <main className="flex-1">
-                <Routes>
-                  {/* Public & Student Accessible Pages */}
+                <ErrorBoundary title="CampusFind — Page couldn't be loaded">
+                  <Routes>
+                    {/* Public & Student Accessible Pages */}
                   <Route path="/" element={<LandingPage />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/register" element={<RegisterPage />} />
@@ -296,7 +298,8 @@ function App() {
                   {/* Fallback */}
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
-              </main>
+              </ErrorBoundary>
+            </main>
               <Footer />
             </div>
           </NotificationProvider>
