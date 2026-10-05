@@ -14,7 +14,7 @@ function ping() {
     res.on('data', chunk => data += chunk);
     res.on('end', () => {
       if (res.statusCode === 200) {
-        // Keep-alive OK
+        console.log(`[Keep-Alive] Heartbeat OK at ${new Date().toISOString()}`);
       } else {
         console.warn(`[Keep-Alive] Warning: Received status ${res.statusCode} at ${new Date().toISOString()}`);
       }
