@@ -5,6 +5,7 @@ import com.findback.dto.*;
 import com.findback.exception.BadRequestException;
 import com.findback.exception.ResourceNotFoundException;
 import com.findback.exception.UnauthorizedException;
+import org.springframework.security.access.AccessDeniedException;
 import com.findback.model.ClaimStatus;
 import com.findback.model.ItemType;
 import com.findback.model.NotificationType;
@@ -128,38 +129,28 @@ public class UserService {
         User user = userRepository.findByStudentIdOrEmail(identifier.trim())
                 .orElseThrow(() -> new UnauthorizedException("Invalid Student ID/Email or password"));
 
-        boolean passwordMatches = passwordEncoder.matches(request.getPassword(), user.getPassword());
-        if (!passwordMatches && user.getRole() == Role.ADMIN) {
-            String p = request.getPassword() != null ? request.getPassword().trim() : "";
-            if (!p.isBlank()) {
-                user.setPassword(passwordEncoder.encode(p));
-                userRepository.save(user);
-                passwordMatches = true;
-            }
-        }
-
-        if (!passwordMatches) {
-            throw new UnauthorizedException("Invalid Student ID/Email or password");
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new UnauthorizedException("Invalid student ID/email or password.");
         }
 
         String status = user.getStatus() != null ? user.getStatus().toUpperCase() : "PENDING";
         if (user.getRole() == Role.STUDENT) {
             if ("PENDING".equals(status)) {
-                throw new UnauthorizedException("Your account is waiting for administrator approval.");
+                throw new AccessDeniedException("Your account is awaiting administrator approval.");
             } else if ("REJECTED".equals(status)) {
                 String reason = user.getRejectionReason();
-                throw new UnauthorizedException("Your registration request was rejected." +
+                throw new AccessDeniedException("Your registration request was rejected." +
                         (reason != null && !reason.isBlank() ? " Reason: " + reason : ""));
             } else if ("SUSPENDED".equals(status)) {
-                throw new UnauthorizedException("Your account has been suspended. Please contact the administrator.");
+                throw new AccessDeniedException("Your account has been suspended.");
             } else if ("DEACTIVATED".equals(status)) {
-                throw new UnauthorizedException("Your account has been deactivated.");
+                throw new AccessDeniedException("Your account has been deactivated.");
             } else if (!"APPROVED".equals(status) && !"ACTIVE".equals(status)) {
-                throw new UnauthorizedException("Your account is not approved to access the campus portal.");
+                throw new AccessDeniedException("Your CampusFind account is not approved or has been suspended.");
             }
         } else {
             if ("SUSPENDED".equalsIgnoreCase(status) || "DEACTIVATED".equalsIgnoreCase(status)) {
-                throw new UnauthorizedException("Your administrator account is inactive.");
+                throw new AccessDeniedException("Your administrator account is inactive.");
             }
         }
 

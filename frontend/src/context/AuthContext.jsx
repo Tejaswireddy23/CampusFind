@@ -50,14 +50,28 @@ export const AuthProvider = ({ children }) => {
       success(`Welcome back, ${userData.name}!`);
       return { success: true, user: userData };
     } catch (err) {
-      let msg = err.response?.data?.message;
-      if (!msg) {
-        if (err.message === 'Network Error' || !err.response) {
-          msg = 'Network connection issue to campus server. Please retry in a moment.';
+      let msg;
+      if (err.response) {
+        const status = err.response.status;
+        const serverMsg = err.response.data?.message;
+
+        if (status === 401) {
+          msg = serverMsg || "Invalid student ID/email or password.";
+        } else if (status === 403) {
+          msg = serverMsg || "Your CampusFind account is not approved or has been suspended.";
+        } else if (status === 404) {
+          msg = "CampusFind authentication service was not found.";
+        } else if (status >= 500) {
+          msg = "Campus server encountered an error. Please try again.";
         } else {
-          msg = 'Invalid Student ID/Email or password';
+          msg = serverMsg || "Authentication failed. Please verify your credentials.";
         }
+      } else if (err.request || err.message === 'Network Error') {
+        msg = "Unable to connect to the CampusFind server.";
+      } else {
+        msg = err.message || "An unexpected error occurred during sign-in.";
       }
+
       toastError(msg);
       return { success: false, error: msg };
     }

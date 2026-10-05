@@ -81,11 +81,21 @@ public class SecurityConfig {
                 .filter(s -> !s.isEmpty())
                 .collect(Collectors.toList());
 
+        List<String> patterns = new java.util.ArrayList<>();
+        patterns.add("http://localhost:[*]");
+        patterns.add("http://127.0.0.1:[*]");
+        patterns.add("https://*.vercel.app");
+        patterns.add("https://vercel.app");
+        patterns.add("https://*.trycloudflare.com");
+        patterns.add("https://*.onrender.com");
+
         if (origins.contains("*")) {
-            configuration.setAllowedOriginPatterns(List.of("*"));
+            patterns.add("*");
         } else {
-            configuration.setAllowedOrigins(origins);
+            patterns.addAll(origins);
         }
+
+        configuration.setAllowedOriginPatterns(patterns);
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers"));

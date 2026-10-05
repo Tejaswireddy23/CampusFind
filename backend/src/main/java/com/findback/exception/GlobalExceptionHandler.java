@@ -42,7 +42,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex) {
-        return new ResponseEntity<>(new ErrorResponse(HttpStatus.FORBIDDEN.value(), "Access denied: insufficient permissions"), HttpStatus.FORBIDDEN);
+        String msg = (ex.getMessage() != null && !ex.getMessage().isBlank()) ? ex.getMessage() : "Access denied: insufficient permissions";
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.FORBIDDEN.value(), msg), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -54,6 +55,11 @@ public class GlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleMessageNotReadable(org.springframework.http.converter.HttpMessageNotReadableException ex) {
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Malformed JSON request body: please verify syntax"), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

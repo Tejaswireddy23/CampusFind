@@ -121,24 +121,34 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void seedInitialAdmin() {
-        // Create initial administrator if not already present
-        if (!userRepository.existsByEmail(initialAdminEmail)) {
-            User admin = new User(
-                    initialAdminStudentId,
-                    initialAdminName,
-                    initialAdminEmail,
-                    passwordEncoder.encode(initialAdminPassword),
-                    "+1 555-0100",
-                    "Campus Security & Administration",
-                    "Staff",
-                    "Admin",
-                    Role.ADMIN
-            );
-            admin.setAvatarUrl("https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150");
-            admin.setStatus("APPROVED");
-            userRepository.save(admin);
-            logger.info("Initialized primary campus administrator: {}", initialAdminEmail);
-        }
+        userRepository.findByEmail(initialAdminEmail).ifPresentOrElse(
+                admin -> {
+                    if (!passwordEncoder.matches(initialAdminPassword, admin.getPassword())) {
+                        admin.setPassword(passwordEncoder.encode(initialAdminPassword));
+                    }
+                    admin.setStatus("APPROVED");
+                    admin.setRole(Role.ADMIN);
+                    userRepository.save(admin);
+                    logger.info("Synchronized primary campus administrator: {}", initialAdminEmail);
+                },
+                () -> {
+                    User admin = new User(
+                            initialAdminStudentId,
+                            initialAdminName,
+                            initialAdminEmail,
+                            passwordEncoder.encode(initialAdminPassword),
+                            "+1 555-0100",
+                            "Campus Security & Administration",
+                            "Staff",
+                            "Admin",
+                            Role.ADMIN
+                    );
+                    admin.setAvatarUrl("https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150");
+                    admin.setStatus("APPROVED");
+                    userRepository.save(admin);
+                    logger.info("Initialized primary campus administrator: {}", initialAdminEmail);
+                }
+        );
 
         userRepository.findByStudentId("ADM002").ifPresentOrElse(
                 existing -> {

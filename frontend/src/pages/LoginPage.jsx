@@ -66,32 +66,37 @@ const LoginPage = () => {
 
         {/* Demo Credentials Quick Click */}
         <div className="p-3.5 rounded-2xl bg-orange-50/70 border border-orange-200/60 text-xs text-neutral-700 space-y-2">
-          <div className="font-semibold text-orange-950 flex items-center gap-1.5">
-            <UserCheck className="w-4 h-4 text-primary" />
-            Quick Campus Logins:
+          <div className="font-semibold text-orange-950 flex items-center justify-between">
+            <span className="flex items-center gap-1.5">
+              <UserCheck className="w-4 h-4 text-primary" />
+              Demo Logins (Evaluation & Testing):
+            </span>
+            <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-orange-200 text-orange-800">
+              Demo
+            </span>
           </div>
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
               onClick={() => fillAndLogin('admin@campusfind.edu', 'Admin@123')}
-              className="px-2.5 py-1 rounded-lg bg-neutral-900 text-white font-medium hover:bg-neutral-800 transition-colors flex items-center gap-1 active:scale-95 cursor-pointer"
+              className="px-2.5 py-1 rounded-lg bg-neutral-900 text-white font-medium hover:bg-neutral-800 transition-colors flex items-center gap-1 active:scale-95 cursor-pointer text-xs"
             >
               <ShieldCheck className="w-3.5 h-3.5 text-primary" />
-              Campus Admin
+              Demo: Campus Admin
             </button>
             <button
               type="button"
               onClick={() => fillAndLogin('STU2024001', 'password123')}
-              className="px-2.5 py-1 rounded-lg bg-white border border-neutral-200 text-neutral-800 font-medium hover:bg-neutral-50 transition-colors active:scale-95 cursor-pointer"
+              className="px-2.5 py-1 rounded-lg bg-white border border-neutral-200 text-neutral-800 font-medium hover:bg-neutral-50 transition-colors active:scale-95 cursor-pointer text-xs"
             >
-              Student Aravind
+              Demo: Student Aravind
             </button>
             <button
               type="button"
               onClick={() => fillAndLogin('STU2024002', 'password123')}
-              className="px-2.5 py-1 rounded-lg bg-white border border-neutral-200 text-neutral-800 font-medium hover:bg-neutral-50 transition-colors active:scale-95 cursor-pointer"
+              className="px-2.5 py-1 rounded-lg bg-white border border-neutral-200 text-neutral-800 font-medium hover:bg-neutral-50 transition-colors active:scale-95 cursor-pointer text-xs"
             >
-              Student Priya
+              Demo: Student Priya
             </button>
           </div>
         </div>

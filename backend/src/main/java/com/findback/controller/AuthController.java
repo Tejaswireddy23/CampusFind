@@ -34,7 +34,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request, HttpServletRequest req) {
         String ip = req.getRemoteAddr();
-        logger.info(">>> LOGIN ATTEMPT: identifier='{}', password='{}'", request.getLoginIdentifier(), request.getPassword());
+        logger.info("Authentication request received for identifier: {}", request.getLoginIdentifier());
         return ResponseEntity.ok(userService.login(request, ip));
     }
 
