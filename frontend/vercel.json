@@ -3,15 +3,15 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://optimize-visitor-endless-expenditure.trycloudflare.com/api/$1"
+      "destination": "https://campusfind-api-2026.loca.lt/api/$1"
     },
     {
       "source": "/uploads/(.*)",
-      "destination": "https://optimize-visitor-endless-expenditure.trycloudflare.com/uploads/$1"
+      "destination": "https://campusfind-api-2026.loca.lt/uploads/$1"
     },
     {
       "source": "/ws/(.*)",
-      "destination": "https://optimize-visitor-endless-expenditure.trycloudflare.com/ws/$1"
+      "destination": "https://campusfind-api-2026.loca.lt/ws/$1"
     },
     {
       "source": "/(.*)",
