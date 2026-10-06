@@ -62,12 +62,12 @@ export const AuthProvider = ({ children }) => {
         } else if (status === 404) {
           msg = "CampusFind authentication service was not found.";
         } else if (status >= 500) {
-          msg = "Campus server encountered an error. Please try again.";
+          msg = serverMsg || "Campus server encountered an error. Please try again.";
         } else {
           msg = serverMsg || "Authentication failed. Please verify your credentials.";
         }
       } else if (err.request || err.message === 'Network Error') {
-        msg = "Unable to connect to the CampusFind server.";
+        msg = "Connecting to Campus server... Please retry in a few moments if server is waking up.";
       } else {
         msg = err.message || "An unexpected error occurred during sign-in.";
       }

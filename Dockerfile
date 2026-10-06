@@ -8,7 +8,7 @@ WORKDIR /app
 
 # Cache dependencies
 COPY backend/pom.xml .
-RUN mvn dependency:go-offline -B
+RUN mvn dependency:go-offline -B || true
 
 # Copy backend source code and build production package
 COPY backend/src ./src
@@ -39,4 +39,4 @@ ENV PORT=8081 \
 
 EXPOSE 8081
 
-ENTRYPOINT ["sh", "-c", "java -XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -Djava.security.egd=file:/dev/./urandom -jar app.jar"]
+ENTRYPOINT ["sh", "-c", "java -XX:MaxRAMPercentage=75.0 -Djava.security.egd=file:/dev/./urandom -jar app.jar"]

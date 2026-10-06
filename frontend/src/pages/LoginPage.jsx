@@ -203,7 +203,10 @@ const LoginPage = () => {
             className="w-full py-3.5 px-4 rounded-xl text-sm font-bold text-white bg-primary hover:bg-primary-dark transition-all shadow-md shadow-orange-500/20 flex items-center justify-center gap-2 disabled:opacity-60"
           >
             {loading ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>Connecting to Campus server...</span>
+              </div>
             ) : (
               <>
                 Sign In to Campus <ArrowRight className="w-4 h-4" />
